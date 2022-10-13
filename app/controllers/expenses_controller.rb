@@ -1,6 +1,7 @@
 class ExpensesController < ApplicationController
    
-    
+    # protect_from_forgery with: :null_session
+    # before_action :authorize
     
     # GET /expenses
     def index
@@ -28,7 +29,7 @@ class ExpensesController < ApplicationController
         end
     end
 
-    # PUT/PATCH /tasks/{id}
+    # PUT/PATCH /expenses/{id}
     def update
         expense = Expense.find_by(id:params[:id])
 
@@ -40,7 +41,7 @@ class ExpensesController < ApplicationController
         end
     end
 
-    # DELETE /tasks/{id}
+    # DELETE /expenses/{id}
     def destroy
         expense = Expense.find_by(id:params[:id])
 

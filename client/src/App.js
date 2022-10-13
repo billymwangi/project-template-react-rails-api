@@ -14,7 +14,11 @@ import RegisterForm from "./components/RegisterForm";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [formData, setFormData] = useState({ name: "", cost: "", user_id: localStorage.getItem("user") });
+  const [formData, setFormData] = useState({
+    name: "",
+    cost: "",
+    user_id: localStorage.getItem("user"),
+  });
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
@@ -58,14 +62,14 @@ function App() {
     setExpenses(expenses.filter((expense) => expense.id !== id));
   };
   const navigate = useNavigate();
-  function onLogin(user) {
+  function onLogin(_user) {
     setUser(user);
     navigate("/expenses");
   }
-  
+
   return (
     <Routes>
-      <Route path="/" element={<RegisterForm />} />
+      <Route path="/" element={<RegisterForm onLogin={onLogin} />} />
       <Route
         path="/expenses"
         element={

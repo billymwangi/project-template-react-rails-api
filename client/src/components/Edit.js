@@ -21,8 +21,7 @@ function Edit() {
     event.preventDefault();
 
     function editExpense() {
-      
-        axios.patch(`http://localhost:3000/expense/${id}`, formData)
+        axios.patch(`http://localhost:3000/expenses/${id}`, formData)
         .then((expenses) => setExpenses(expenses))
         .then(navigate("/expenses"));
     }
