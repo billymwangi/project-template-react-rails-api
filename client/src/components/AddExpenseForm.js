@@ -2,6 +2,12 @@ import React from 'react'
 
 
 function AddExpenseForm({handleSubmit, handleChange, formData}) {
+    // const [user, setUser] = useState(null)
+    // useEffect(() => {
+    //  setUser(localStorage.getItem("user")) 
+    //  console.log(user)
+    // }, [])
+    
   
   return (
     <form onSubmit={handleSubmit} >

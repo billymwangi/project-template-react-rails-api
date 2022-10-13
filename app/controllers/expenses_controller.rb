@@ -1,5 +1,7 @@
 class ExpensesController < ApplicationController
    
+    
+    
     # GET /expenses
     def index
         render json: Expense.all, status: :ok

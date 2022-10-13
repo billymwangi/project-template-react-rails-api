@@ -6,17 +6,15 @@ import TotalExpenses from "./components/TotalExpenses";
 import ExpenseList from "./components/ExpenseList";
 import AddExpenseForm from "./components/AddExpenseForm";
 import Footer from "./components/Footer";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Articles from "./components/Articles";
 import Edit from "./components/Edit";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 
-
 function App() {
- 
-
-  const [formData, setFormData] = useState({ name: "", cost: "" });
+  const [user, setUser] = useState(null);
+  const [formData, setFormData] = useState({ name: "", cost: "", user_id: localStorage.getItem("user") });
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
@@ -27,7 +25,9 @@ function App() {
 
   function handleSubmit(event) {
     console.log(formData);
-    addExpense(setFormData({ name: "", cost: "" }));
+    addExpense(
+      setFormData({ name: "", cost: "", user_id: localStorage.getItem("user") })
+    );
     event.preventDefault();
 
     function addExpense() {
@@ -57,62 +57,65 @@ function App() {
 
     setExpenses(expenses.filter((expense) => expense.id !== id));
   };
-
+  const navigate = useNavigate();
+  function onLogin(user) {
+    setUser(user);
+    navigate("/expenses");
+  }
+  
   return (
-    <Router>
-      <Routes>
+    <Routes>
       <Route path="/" element={<RegisterForm />} />
-        <Route
-          path="/expenses"
-          element={
-            <div className="container">
-              <h1 className="mt-3">My Budget Planner</h1>
+      <Route
+        path="/expenses"
+        element={
+          <div className="container">
+            <h1 className="mt-3">My Budget Planner</h1>
 
-              <div className="row mt-3">
-                <div className="col-sm">
-                  <Budget />
-                </div>
-                <div className="col-sm">
-                  <Remaining />
-                </div>
-                <div className="col-sm">
-                  <TotalExpenses />
-                </div>
-                <h3 className="mt-3">Add Expense</h3>
-                <div className="mt-3">
-                  <div className="col-sm">
-                    <AddExpenseForm
-                      handleSubmit={handleSubmit}
-                      handleChange={handleChange}
-                      formData={formData}
-                    />
-                  </div>
-                </div>
+            <div className="row mt-3">
+              <div className="col-sm">
+                <Budget />
               </div>
-              <h3 className="mt-3">Expenses</h3>
-              <div className="row mt-3">
+              <div className="col-sm">
+                <Remaining />
+              </div>
+              <div className="col-sm">
+                <TotalExpenses />
+              </div>
+              <h3 className="mt-3">Add Expense</h3>
+              <div className="mt-3">
                 <div className="col-sm">
-                  <ExpenseList
-                    expenses={expenses}
-                    deleteExpense={deleteExpense}
+                  <AddExpenseForm
+                    handleSubmit={handleSubmit}
+                    handleChange={handleChange}
+                    formData={formData}
                   />
                 </div>
               </div>
-
-              <div className="mt-3">
-                <div className="col-sm">
-                  <Footer />
-                </div>
+            </div>
+            <h3 className="mt-3">Expenses</h3>
+            <div className="row mt-3">
+              <div className="col-sm">
+                <ExpenseList
+                  expenses={expenses}
+                  deleteExpense={deleteExpense}
+                />
               </div>
             </div>
-          }
-        />
-    
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/edit-expense/:id" element={<Edit />} />
-        <Route path="/login" element={<LoginForm />} />
-      </Routes>
-    </Router>
+
+            <div className="mt-3">
+              <div className="col-sm">
+                <Footer />
+              </div>
+            </div>
+          </div>
+        }
+      />
+
+      <Route path="/articles" element={<Articles />} />
+      <Route path="/edit-expense/:id" element={<Edit />} />
+      <Route path="/login" element={<LoginForm onLogin={onLogin} />} />
+    </Routes>
   );
 }
 

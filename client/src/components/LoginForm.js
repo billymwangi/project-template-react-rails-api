@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
-function LoginForm() {
+function LoginForm({onLogin}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
@@ -15,15 +15,16 @@ function LoginForm() {
       },
       body: JSON.stringify({ email, password }),
     })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(err => console.error(err));
-    // .then((r) => {
-    //   if (r.ok) {
-    //     r.json().then((user) => onLogin(user));
-    //   } else {
-    //     r.json().then((err) => setErrors(err.errors));
-    //   }
+    .then(response => {
+    if (response.ok) {
+      response.json().then (onLogin)
+    }else {
+      response.json().then (console.log)
+    }})
+
+    // .then(data => console.log(data))
+    // .catch(err => console.error(err));
+
   }
 
   return (

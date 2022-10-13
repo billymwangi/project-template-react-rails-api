@@ -1,5 +1,5 @@
 puts "🌱 Seeding users..."
-User.create(name: "paul", password_digest:1234, email:"paul@gmail.com")
+User.create(name: "paul", password:"1234", password_confirmation:"1234", email:"paul@gmail.com")
 
 puts "🌱 Seeding expenses..."
 

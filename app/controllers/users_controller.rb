@@ -15,18 +15,16 @@ class UsersController < ApplicationController
         end
     end
 
-     # AUTHENTICATE USER
-     def login
-        user = User.find_by(email:params[:email])
-
-        # validate that the user exists
-        if user && user.authenticate(params[:password])
-            token = encode_token({id: user.id})
-            render json: { user: user, token: token }, status: :ok
+     # GET /users/{id}
+     def show
+        user = User.find_by(id:params[:id])
+        if user
+            render json: user, status: :ok
         else
-            render json: { error: 'Invalid email or password'}, status: :unprocessable_entity
+            render json: { error: "User not found" }, status: :not_found
         end
     end
+     
 
     private
     def user_params

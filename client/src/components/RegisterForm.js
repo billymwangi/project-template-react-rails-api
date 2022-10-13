@@ -1,24 +1,32 @@
 import React, { useState } from "react";
 
-function RegisterForm() {
+function RegisterForm({onLogin}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  
-    function handleSubmit(e) {
-      e.preventDefault();
-      fetch("/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
-      })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(err => console.error(err));
-    // .then((r) => {
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    fetch("/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, password }),
+    }).then(response => {
+      if (response.ok) {
+        response.json().then (onLogin)
+      }else {
+        response.json().then (console.log)
+      }})
+      
+
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+   
+     // .then((r) => {
     //   if (r.ok) {
     //     r.json().then((user) => onLogin(user));
     //     console.log(r);
